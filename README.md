@@ -1,6 +1,5 @@
-# dio-banco-digital
+# DIO Live banco digital
 
-DIO Live banco digital
 
 - Tipos de conta:
   1 - Contas corrente e poupança;
