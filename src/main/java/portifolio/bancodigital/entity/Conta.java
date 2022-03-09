@@ -4,28 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.NotNull;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Conta implements IConta {
+
+public abstract class Conta  {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int numero;
 	@Column(nullable = true)
 	protected double saldo;
-	@Column(nullable = true)
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	protected Cliente cliente;
-	@Column(nullable = true)
-	protected Agencia agencia;
+	@Column
+	protected String tipo;
 
-	public Conta(Cliente cliente, Agencia agencia) {
-		this.agencia = agencia;
+	public Conta(String tipo, Cliente cliente) {
+		this.tipo = tipo;
 		this.cliente = cliente;
 	}
 
-	@Override
+	/*@Override
 	public void sacar(double valor) {
 		saldo -= valor;
 	}
@@ -39,12 +41,6 @@ public abstract class Conta implements IConta {
 	public void transferir(double valor, @NotNull IConta contaDestino) {
 		this.sacar(valor);
 		contaDestino.depositar(valor);
-	}
+	}*/
 
-	protected void imprimirInfosComuns() {
-		System.out.println(String.format("Titular: %s", this.cliente.getNome()));
-		System.out.println(String.format("Agencia: %d", this.agencia.getCodigo()));
-		System.out.println(String.format("Numero: %d", this.numero));
-		System.out.println(String.format("Saldo: %.2f", this.saldo));
-	}
 }
